@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charlie Tucker</title>
+<meta name="description" content="Charlie Tucker. Computer engineering at the University of Miami. C++/CUDA deep learning systems and LLM safety research.">
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+    line-height: 1.55;
+    color: #111;
+    background: #fff;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #ddd; background: #121212; }
+    a { color: #8ab4f8; }
+    h2 { border-color: #444; }
+  }
+  h1 { font-size: 1.6rem; margin: 0 0 0.2rem; }
+  .sub { margin: 0 0 1.5rem; }
+  h2 {
+    font-size: 1rem;
+    font-variant: small-caps;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid #999;
+    padding-bottom: 0.15rem;
+    margin: 2.2rem 0 0.8rem;
+  }
+  h3 { font-size: 1rem; margin: 1.4rem 0 0.3rem; }
+  h3 .links { font-weight: normal; font-size: 0.9rem; }
+  p, ul { margin: 0.5rem 0; }
+  ul { padding-left: 1.2rem; }
+  li { margin: 0.3rem 0; }
+  .contact { margin-top: 3rem; font-size: 0.9rem; border-top: 1px solid #999; padding-top: 0.8rem; }
+</style>
+</head>
+<body>
+
+<h1>Charlie Tucker</h1>
+<p class="sub">
+  <a href="https://github.com/charlie-tucker1">GitHub</a> ·
+  <a href="https://www.linkedin.com/in/charlietucker1">LinkedIn</a> ·
+  <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>
+</p>
+
+<p>I'm a computer engineering student at the University of Miami (B.S. expected May 2028). Most of my work is
+ML systems built close to the metal: a deep learning engine written from scratch in C++/CUDA, published research
+on refusal behavior in language models, and the occasional independent audit of a published claim. Right now I'm
+porting deepC's backend to hand-written CUDA kernels and TA-ing intro machine learning.</p>
+
+<h2>Projects</h2>
+
+<h3>deepC <span class="links">· <a href="https://github.com/charlie-tucker1/deepc">repo</a></span></h3>
+<p>A deep learning engine in modern C++ with zero external dependencies and no AI codegen: reverse-mode automatic
+differentiation over an arena-owned expression graph, topological backward scheduling via a pending-consumer
+counter, and a two-layer design that isolates raw-pointer compute kernels from the graph/ownership layer, so the
+CPU backend swaps to hand-written CUDA kernels with no engine changes (RTX 5070 port in progress).</p>
+<ul>
+  <li>Trained an MLP (784→128→10) on MNIST end to end on the engine: 95.85% test accuracy, every operator
+  gradcheck-certified both raw and composed through the full network.</li>
+  <li>The finite-difference gradient checker is derived, not borrowed: I computed the truncation-vs-cancellation
+  error floor analytically (~3e-11 at h≈1e-5) and matched it to measurement. The harness has caught three classes
+  of silent-wrongness bugs, including one in itself.</li>
+  <li>Measured a Debug→Release speedup asymmetry of 9.4× (inference) vs 2.4× (training) and traced it to memory
+  access patterns in the backward pass.</li>
+  <li>In progress: CUDA kernels verified against the CPU implementations as oracles, and a small language model
+  trained on the engine.</li>
+</ul>
+
+<h3>Extropic DTM energy-claim audit <span class="links">· <a href="https://github.com/charlie-tucker1/dtm-kmix-audit">repo</a></span></h3>
+<p>Extropic's Denoising Thermodynamic Model paper (arXiv:2510.23972) asserts a K_mix = 250 Gibbs-sweep constant
+at the center of its energy-efficiency claim. I replicated the Fashion-MNIST model on the official thrml stack
+and measured the FID-vs-K quality curve the paper does not report.</p>
+<ul>
+  <li>The fixed-β regime the energy model assumes stalls roughly 13 FID short of the quality plateau at every
+  budget tested (K ≤ 3200), implying a 3.2× correction to the energy claim at matched quality.</li>
+  <li>Measured a 0.30–0.32 J/image GPU baseline against the paper's projected 23 nJ.</li>
+  <li>Surfaced two reproducibility defects in the vendor stack: an un-checkpointed annealing parameter, and a
+  load path that silently samples an untrained model. Full report in the repo.</li>
+</ul>
+
+<h3>PlayFormer <span class="links">· <a href="https://github.com/charlie-tucker1/playformer">repo</a></span></h3>
+<p>A 2.48M-parameter Transformer encoder for NFL play-type prediction, trained over 709,000 plays from 19 seasons
+of nflfastR data with a dual-head factorization separating rare-event prediction from the pass-vs-run decision.</p>
+<ul>
+  <li>0.862 test macro-F1 (2-model ensemble) on a held-out 2024 season under a strict temporal split: predict
+  next season, not interpolate within seen ones.</li>
+  <li>160+ automated experiments run through a custom optimization loop, each logged with a keep/discard verdict.</li>
+</ul>
+
+<h2>Research</h2>
+
+<h3>Domain-Specificity of Refusal Representations in Large Language Models
+<span class="links">· <a href="papers/tucker-leon-flairs39-domain-specificity.pdf">PDF</a></span></h3>
+<p>C. Tucker, M. Leon. Proceedings of FLAIRS-39, May 2026. <strong>Best Poster Award, 1 of 3 conference-wide.</strong></p>
+<p>Is the single "refusal direction" in LLM activation space domain-specific or universal? We extracted per-domain
+and universal refusal directions from Llama 3.1 8B residual-stream activations and ran cross-domain directional
+ablation with LLM-judge scoring and random-direction controls. Refusal geometry turned out to be domain-invariant:
+within- and cross-domain ablation were statistically indistinguishable (25.6% vs 32.2% refusal, Fisher's exact
+p = 0.324), and every domain direction aligned strongly with the universal one (mean cosine 0.916). Removing one
+direction compromises guardrails in every domain at once.</p>
+
+<h3>Auditing Abliteration: Normalization Placement, Edit Budget, and Transfer in Single-Direction Refusal Removal</h3>
+<p>C. Tucker, M. Leon. IEEE Opportunity Research Scholars Symposium (ORSS), 2026. <strong>Accepted, to appear
+in IEEE Xplore.</strong></p>
+<p>The follow-on: if one direction carries refusal, how robust are models to its deliberate removal? We audit
+weight-space refusal removal as a tampering attack across Qwen-2.5-7B, Mistral-7B, and Gemma-2-9B, and isolate
+three methodological factors an evaluation must hold constant to rank model robustness. Reproducibility artifacts
+released with a dual-use-aware withholding policy.</p>
+
+<h3>Talks and positions</h3>
+<ul>
+  <li>Research talk, ACC Meeting of the Minds Undergraduate Research Conference, FSU (Spring 2026): one of five
+  students selected to represent the University of Miami. "How AI Learns to Say No, and How Easily That Can Be
+  Undone."</li>
+  <li>Research Assistant, Intelligent Computer Systems Research Institute (ICSRI), advisor Prof. Maikel Leon
+  (Spring 2026 to present).</li>
+  <li>With Bonsai Applied Computations Group, a selective student computing group at Miami, I built the
+  dimensionality-reduction stage of a Cell Painting image-profiling pipeline for a UM research lab:
+  control-anchored PCA and whitening so healthy-cell morphology defines the geometry, plus the UMAP exploration
+  suite. My favorite finding came from validating before trusting: the cross-plate principal components were
+  encoding plate identity, not biology.</li>
+</ul>
+
+<h2>Elsewhere</h2>
+<ul>
+  <li>Risk Intern, Guy Carpenter (Marsh McLennan), New York, Summer 2025: failure-mode analysis on a production
+  contract-analysis NLP model, plus data pipelines over 500,000+ insurance records.</li>
+  <li>Teaching assistant at Miami for programming fundamentals (Spring 2026) and intro machine learning (Fall 2026).</li>
+  <li>Brazilian Jiu-Jitsu, badly but persistently.</li>
+</ul>
+
+<p class="contact">Full CV on request: <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>.
+This page is hand-written HTML. No framework, no build step, no tracker.</p>
+
+</body>
+</html>
