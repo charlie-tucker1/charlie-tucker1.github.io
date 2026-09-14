@@ -1,0 +1,46 @@
+:root { color-scheme: light dark; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 4rem;
+  line-height: 1.55;
+  color: #111;
+  background: #fff;
+}
+@media (prefers-color-scheme: dark) {
+  body { color: #ddd; background: #121212; }
+  a { color: #8ab4f8; }
+  h2 { border-color: #444; }
+  .postmeta { color: #999; }
+}
+h1 { font-size: 1.6rem; margin: 0 0 0.2rem; }
+.sub { margin: 0 0 1.5rem; }
+h2 {
+  font-size: 1rem;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid #999;
+  padding-bottom: 0.15rem;
+  margin: 2.2rem 0 0.8rem;
+}
+h3 { font-size: 1rem; margin: 1.4rem 0 0.3rem; }
+h3 .links { font-weight: normal; font-size: 0.9rem; }
+p, ul { margin: 0.5rem 0; }
+ul { padding-left: 1.2rem; }
+li { margin: 0.3rem 0; }
+.contact { margin-top: 3rem; font-size: 0.9rem; border-top: 1px solid #999; padding-top: 0.8rem; }
+
+/* notes/ additions */
+.postmeta { font-size: 0.9rem; color: #666; margin: 0 0 1.5rem; }
+.postlist { list-style: none; padding-left: 0; }
+.postlist li { margin: 0.7rem 0; }
+.postlist .date { font-size: 0.9rem; color: #666; }
+@media (prefers-color-scheme: dark) { .postlist .date { color: #999; } }
+article pre {
+  overflow-x: auto;
+  background: rgba(127, 127, 127, 0.12);
+  padding: 0.7rem;
+  font-size: 0.85rem;
+}
+article code { font-family: Consolas, monospace; font-size: 0.9em; }

@@ -5,39 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Charlie Tucker</title>
 <meta name="description" content="Charlie Tucker. Computer engineering at the University of Miami. C++/CUDA deep learning systems and LLM safety research.">
-<style>
-  :root { color-scheme: light dark; }
-  body {
-    font-family: Georgia, 'Times New Roman', serif;
-    max-width: 44rem;
-    margin: 0 auto;
-    padding: 2.5rem 1.25rem 4rem;
-    line-height: 1.55;
-    color: #111;
-    background: #fff;
-  }
-  @media (prefers-color-scheme: dark) {
-    body { color: #ddd; background: #121212; }
-    a { color: #8ab4f8; }
-    h2 { border-color: #444; }
-  }
-  h1 { font-size: 1.6rem; margin: 0 0 0.2rem; }
-  .sub { margin: 0 0 1.5rem; }
-  h2 {
-    font-size: 1rem;
-    font-variant: small-caps;
-    letter-spacing: 0.04em;
-    border-bottom: 1px solid #999;
-    padding-bottom: 0.15rem;
-    margin: 2.2rem 0 0.8rem;
-  }
-  h3 { font-size: 1rem; margin: 1.4rem 0 0.3rem; }
-  h3 .links { font-weight: normal; font-size: 0.9rem; }
-  p, ul { margin: 0.5rem 0; }
-  ul { padding-left: 1.2rem; }
-  li { margin: 0.3rem 0; }
-  .contact { margin-top: 3rem; font-size: 0.9rem; border-top: 1px solid #999; padding-top: 0.8rem; }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -45,6 +13,7 @@
 <p class="sub">
   <a href="https://github.com/charlie-tucker1">GitHub</a> ·
   <a href="https://www.linkedin.com/in/charlietucker1">LinkedIn</a> ·
+  <a href="notes/index.html">Notes</a> ·
   <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>
 </p>
 
@@ -67,8 +36,7 @@ CPU backend swaps to hand-written CUDA kernels with no engine changes (RTX 5070 
   error floor analytically (~3e-11 at h≈1e-5) and matched it to measurement. Adjusts tolerances for dtype (float, double, bf).</li>
   <li>Measured a Debug→Release speedup asymmetry of 9.4× (inference) vs 2.4× (training) and traced it to memory
   access patterns in the backward pass.</li>
-  <li>In progress: CUDA kernels verified against the CPU implementations as oracles, and a small language model
-  trained on the engine. Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
+  <li>In progress: CUDA kernels verified against the CPU implementations as oracles. Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
 </ul>
 
 <h3>Extropic DTM energy-claim audit <span class="links">· <a href="https://github.com/charlie-tucker1/dtm-kmix-audit">repo</a></span></h3>
