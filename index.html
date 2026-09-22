@@ -14,13 +14,17 @@
   <a href="https://github.com/charlie-tucker1">GitHub</a> ·
   <a href="https://www.linkedin.com/in/charlietucker1">LinkedIn</a> ·
   <a href="notes/index.html">Notes</a> ·
-  <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>
+  <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a> ·
+  <a href="https://www.youtube.com/@bytesnotflops">YouTube</a>
 </p>
 
-<p>I'm a computer engineering student at the University of Miami. Most of my work is
-ML systems built close to the metal: a deep learning engine written from scratch in C++/CUDA, published research
-on refusal behavior (directions) in language models, and the occasional independent audit of a published claim. Right now I'm
-porting deepC's backend to hand-written CUDA kernels and TA-ing intro machine learning.</p>
+<p>Hi! I'm a Computer Engineering student at the University of Miami. My main interests are: Deep Learning, GPU Programming, ML Systems, 
+and HPC. I like basically everything that has to do with computers! I'm currently working as a Research Assistant, Teaching Assistant, and Quantitative 
+Research Analyst with Bonsai Applied Computations Group. My research focuses mainly on Mech Interp for LLMs, I've had two papers published so far. The first
+was awarded 'Best Poster Award' at FLAIRS-39 in May, 2026. The second was published by IEEE ORSS in September, 2026. Currently, I'm doing research examining 
+diffusion transformers and how to optimize their inference. I spend most of my time reading and working on projects. Recently I've started posting 
+on YouTube, documenting my competitive programming journey as well as making other videos about topics which interest me.
+</p>
 
 <h2>Projects</h2>
 
@@ -32,11 +36,10 @@ CPU backend swaps to hand-written CUDA kernels with no engine changes (RTX 5070 
 <ul>
   <li>Trained an MLP (784→128→10) on MNIST end to end on the engine: 95.85% test accuracy, every operator
   gradcheck-certified both raw and composed through the full network.</li>
-  <li>The finite-difference gradient checker is derived, not borrowed: I computed the truncation-vs-cancellation
-  error floor analytically (~3e-11 at h≈1e-5) and matched it to measurement. Adjusts tolerances for dtype (float, double, bf).</li>
+  <li>Built a finite-difference gradient checking harness to ensure correct backwards closures. Adjusts tolerances for dtype (float, double, bf).</li>
   <li>Measured a Debug→Release speedup asymmetry of 9.4× (inference) vs 2.4× (training) and traced it to memory
   access patterns in the backward pass.</li>
-  <li>In progress: CUDA kernels verified against the CPU implementations as oracles. Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
+  <li>In progress: Refactoring the engine to support training a small language model; Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
 </ul>
 
 <h3>Extropic DTM energy-claim audit <span class="links">· <a href="https://github.com/charlie-tucker1/dtm-kmix-audit">repo</a></span></h3>
@@ -48,7 +51,7 @@ and measured the FID-vs-K quality curve the paper does not report.</p>
   budget tested (K ≤ 3200), implying a 3.2× correction to the energy claim at matched quality.</li>
   <li>Measured a 0.30–0.32 J/image GPU baseline against the paper's projected 23 nJ.</li>
   <li>Surfaced two reproducibility defects in the vendor stack: an un-checkpointed annealing parameter, and a
-  load path that silently samples an untrained model. Full report in the repo.</li>
+  load path that samples an untrained model. Full report in the repo.</li>
 </ul>
 
 <h3>PlayFormer <span class="links">· <a href="https://github.com/charlie-tucker1/playformer">repo</a></span></h3>
@@ -85,13 +88,9 @@ released with a dual-use-aware withholding policy. Will add pdf link upon public
   <li>Research talk, ACC Meeting of the Minds Undergraduate Research Conference, FSU (Spring 2026): one of five
   students selected to represent the University of Miami. "How AI Learns to Say No, and How Easily That Can Be
   Undone."</li>
-  <li>Research Assistant, Intelligent Computer Systems Research Institute (ICSRI), advisor Prof. Maikel Leon
+  <li>Research Assistant, advisor Prof. Maikel Leon
   (Spring 2026 to present).</li>
-  <li>With Bonsai Applied Computations Group, a student computing group at Miami, I built the
-  dimensionality-reduction stage of a Cell Painting image-profiling pipeline for a UM research lab:
-  control-anchored PCA and whitening so healthy-cell morphology defines the geometry, plus the UMAP exploration
-  suite. My favorite finding came from validating before trusting: the cross-plate principal components were
-  encoding plate identity, not biology.</li>
+  <li>Quantitative Research Analyst with Bonsai Applied Computations Group</li>
 </ul>
 
 <h2>Elsewhere</h2>
