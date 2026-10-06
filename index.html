@@ -42,6 +42,26 @@ CPU backend swaps to hand-written CUDA kernels with no engine changes (RTX 5070 
   <li>In progress: Refactoring the engine to support training a small language model; Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
 </ul>
 
+<h3>autokernel <span class="links">· <a href="https://github.com/charlie-tucker1/autokernel">repo</a></span></h3>
+<p>LLM-driven GPU kernel search: an autoresearch loop in which an LLM proposes CUDA kernels against a declarative
+problem spec (computation, shapes, tolerances, target hardware, token budget), and an evaluator compiles, verifies,
+and times each candidate, feeding compiler diagnostics, register and shared-memory usage, per-element correctness
+detail, and timing statistics back to the model.</p>
+<ul>
+  <li>First live run (5 iterations, Claude Sonnet 5.5) produced a verified fp32 SGEMM (double-buffered shared
+  memory, 8×8 register tiling, float4 vectorized loads, bank-conflict-aware thread mapping) running 3% faster than
+  cuBLAS SGEMM on an RTX 5070 at 2048×1024×1024: 0.332 ms vs 0.341 ms.</li>
+  <li>Dependency-free C++/CUDA evaluation harness: model-generated kernels load as shared libraries in a separate,
+  time-limited subprocess through a fixed extern "C" tensor-descriptor ABI, with reward-hacking defenses (fresh
+  seeded inputs the model never sees, NaN-filled outputs, separate correctness and timing input sets, L2 flushing,
+  per-launch CUDA-event timing reported as medians).</li>
+  <li>Diagnosed and fixed measurement pitfalls that inflated results, including cuBLAS settling into two distinct
+  per-process speeds, solved with a best-of-N-process baseline; a 25-test pytest suite with GPU integration tests
+  and an append-only JSONL ledger make every run resumable and analyzable in pandas.</li>
+  <li>Pluggable provider interface (Anthropic, OpenAI-compatible endpoints, mock, human-in-the-loop) and backend
+  interface (CUDA C++ now, Triton next). The model has no shell or command access; it only produces text.</li>
+</ul>
+
 <h3>Extropic DTM energy-claim audit <span class="links">· <a href="https://github.com/charlie-tucker1/dtm-kmix-audit">repo</a></span></h3>
 <p>Extropic's Denoising Thermodynamic Model paper (arXiv:2510.23972) asserts a K_mix = 250 Gibbs-sweep constant
 at the center of its energy-efficiency claim. I replicated the Fashion-MNIST model on the official thrml stack
