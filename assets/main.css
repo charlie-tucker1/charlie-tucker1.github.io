@@ -1,0 +1,32 @@
+body {
+  background: #000;
+  color: #fff;
+  font-family: Consolas, Menlo, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+a { color: #8ab4f8; }
+h1 { font-size: 1.3rem; margin: 0.5rem 0; }
+h2 { font-size: 1.1rem; margin: 2rem 0 0.5rem; }
+h3 { font-size: 1rem; margin: 1.4rem 0 0.3rem; }
+p, ul { margin: 0.6rem 0; }
+ul { padding-left: 1.4rem; }
+li { margin: 0.35rem 0; }
+.meta { color: #888; }
+img { max-width: 100%; }
+pre {
+  background: #161616;
+  padding: 0.7rem;
+  overflow-x: auto;
+}
+code { font-family: inherit; font-size: 13px; }
+blockquote {
+  border-left: 2px solid #555;
+  margin-left: 0;
+  padding-left: 1rem;
+  color: #bbb;
+}
+hr { border: none; border-top: 1px solid #333; }

@@ -1,0 +1,10 @@
+title: charlie tucker
+description: ML systems close to the metal.
+# Flip this to https://bytesnotflops.com once the domain is bought and DNS is live:
+url: "https://charlie-tucker1.github.io"
+timezone: America/New_York
+permalink: /blog/:year/:month/:day/:title/
+plugins:
+  - jekyll-feed
+exclude:
+  - README.md

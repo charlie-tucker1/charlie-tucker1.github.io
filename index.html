@@ -1,127 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Charlie Tucker</title>
-<meta name="description" content="Charlie Tucker. Computer engineering at the University of Miami. C++/CUDA deep learning systems and LLM safety research.">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+---
+layout: default
+---
+<p>hi, i'm charlie. i like computers.</p>
 
-<h1>Charlie Tucker</h1>
-<p class="sub">
-  <a href="https://github.com/charlie-tucker1">GitHub</a> ·
-  <a href="https://www.linkedin.com/in/charlietucker1">LinkedIn</a> ·
-  <!-- hidden until the first post exists: <a href="notes/index.html">Notes</a> · -->
-  <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a> ·
-  <a href="https://www.youtube.com/@bytesnotflops">YouTube</a>
-</p>
+<p>i'm a computer engineering student at the university of miami. i build ML systems close to the
+metal: a deep learning engine from scratch in C++/CUDA, an LLM-driven GPU kernel search, and published
+research on how LLMs refuse (and how easily that can be undone).</p>
 
-<p>Hi! I'm a Computer Engineering student at the University of Miami. My main interests are: Deep Learning, GPU Programming, ML Systems, 
-and HPC. I like basically everything that has to do with computers! I'm currently working as a Research Assistant, Teaching Assistant, and Quantitative 
-Research Analyst with Bonsai Applied Computations Group. My research focuses mainly on Mech Interp for LLMs, I've had two papers published so far. The first
-was awarded 'Best Poster Award' at FLAIRS-39 in May, 2026. The second was published by IEEE ORSS in September, 2026. Currently, I'm doing research examining 
-diffusion transformers and how to optimize their inference. I spend most of my time reading and working on projects. Recently I've started posting 
-on YouTube, documenting my competitive programming journey as well as making other videos about topics which interest me.
-</p>
+<p>the receipts live on the <a href="/projects/">projects &amp; research</a> page.</p>
 
-<h2>Projects</h2>
+<p>i have a blog: <a href="/blog/">i'm working on it</a>. also a
+<a href="https://www.youtube.com/@bytesnotflops">youtube channel</a>, a
+<a href="https://github.com/charlie-tucker1">github</a>, and a
+<a href="https://www.linkedin.com/in/charlietucker1">linkedin</a>.</p>
 
-<h3>deepC <span class="links">· <a href="https://github.com/charlie-tucker1/deepc">repo</a></span></h3>
-<p>A deep learning engine in modern C++ with zero external dependencies and no AI codegen: reverse-mode automatic
-differentiation over an arena-owned expression graph, topological backward scheduling via a pending-consumer
-counter, and a two-layer design that isolates raw-pointer compute kernels from the graph/ownership layer, so the
-CPU backend swaps to hand-written CUDA kernels with no engine changes (RTX 5070 port in progress).</p>
-<ul>
-  <li>Trained an MLP (784→128→10) on MNIST end to end on the engine: 95.85% test accuracy, every operator
-  gradcheck-certified both raw and composed through the full network.</li>
-  <li>Built a finite-difference gradient checking harness to ensure correct backwards closures. Adjusts tolerances for dtype (float, double, bf).</li>
-  <li>Measured a Debug→Release speedup asymmetry of 9.4× (inference) vs 2.4× (training) and traced it to memory
-  access patterns in the backward pass.</li>
-  <li>In progress: Refactoring the engine to support training a small language model; Adding more general ML toolkit as I'm working through the 'Probabilistic Machine Learning' books.</li>
-</ul>
-
-<h3>autokernel <span class="links">· <a href="https://github.com/charlie-tucker1/autokernel">repo</a></span></h3>
-<p>LLM-driven GPU kernel search: an autoresearch loop in which an LLM proposes CUDA kernels against a declarative
-problem spec (computation, shapes, tolerances, target hardware, token budget), and an evaluator compiles, verifies,
-and times each candidate, feeding compiler diagnostics, register and shared-memory usage, per-element correctness
-detail, and timing statistics back to the model.</p>
-<ul>
-  <li>First live run (5 iterations, Claude Sonnet 5.5) produced a verified fp32 SGEMM (double-buffered shared
-  memory, 8×8 register tiling, float4 vectorized loads, bank-conflict-aware thread mapping) running 3% faster than
-  cuBLAS SGEMM on an RTX 5070 at 2048×1024×1024: 0.332 ms vs 0.341 ms.</li>
-  <li>Dependency-free C++/CUDA evaluation harness: model-generated kernels load as shared libraries in a separate,
-  time-limited subprocess through a fixed extern "C" tensor-descriptor ABI, with reward-hacking defenses (fresh
-  seeded inputs the model never sees, NaN-filled outputs, separate correctness and timing input sets, L2 flushing,
-  per-launch CUDA-event timing reported as medians).</li>
-  <li>Diagnosed and fixed measurement pitfalls that inflated results, including cuBLAS settling into two distinct
-  per-process speeds, solved with a best-of-N-process baseline; a 25-test pytest suite with GPU integration tests
-  and an append-only JSONL ledger make every run resumable and analyzable in pandas.</li>
-  <li>Pluggable provider interface (Anthropic, OpenAI-compatible endpoints, mock, human-in-the-loop) and backend
-  interface (CUDA C++ now, Triton next). The model has no shell or command access; it only produces text.</li>
-</ul>
-
-<h3>Extropic DTM energy-claim audit <span class="links">· <a href="https://github.com/charlie-tucker1/dtm-kmix-audit">repo</a></span></h3>
-<p>Extropic's Denoising Thermodynamic Model paper (arXiv:2510.23972) asserts a K_mix = 250 Gibbs-sweep constant
-at the center of its energy-efficiency claim. I replicated the Fashion-MNIST model on the official thrml stack
-and measured the FID-vs-K quality curve the paper does not report.</p>
-<ul>
-  <li>The fixed-β regime the energy model assumes stalls roughly 13 FID short of the quality plateau at every
-  budget tested (K ≤ 3200), implying a 3.2× correction to the energy claim at matched quality.</li>
-  <li>Measured a 0.30–0.32 J/image GPU baseline against the paper's projected 23 nJ.</li>
-  <li>Surfaced two reproducibility defects in the vendor stack: an un-checkpointed annealing parameter, and a
-  load path that samples an untrained model. Full report in the repo.</li>
-</ul>
-
-<h3>PlayFormer <span class="links">· <a href="https://github.com/charlie-tucker1/playformer">repo</a></span></h3>
-<p>A 2.48M-parameter Transformer encoder for NFL play-type prediction, trained over 709,000 plays from 19 seasons
-of nflfastR data with a dual-head factorization separating rare-event prediction from the pass-vs-run decision.</p>
-<ul>
-  <li>0.862 test macro-F1 (2-model ensemble) on a held-out 2024 season under a strict temporal split: predict
-  next season, not interpolate within seen ones.</li>
-  <li>160+ automated experiments run through a custom optimization loop, each logged with a keep/discard verdict. Inspired by Karpathy's autoresearch (I found it to be a very powerful optimization strategy).</li>
-</ul>
-
-<h2>Research</h2>
-
-<h3>Domain-Specificity of Refusal Representations in Large Language Models
-<span class="links">· <a href="papers/tucker-leon-flairs39-domain-specificity.pdf">PDF</a></span></h3>
-<p>C. Tucker, M. Leon. Proceedings of FLAIRS-39, May 2026. <strong>Best Poster Award, 1 of 3 conference-wide.</strong></p>
-<p>Is the single "refusal direction" in LLM activation space domain-specific or universal? We extracted per-domain
-and universal refusal directions from Llama 3.1 8B residual-stream activations and ran cross-domain directional
-ablation with LLM-judge scoring and random-direction controls. Refusal geometry turned out to be domain-invariant:
-within- and cross-domain ablation were statistically indistinguishable (25.6% vs 32.2% refusal, Fisher's exact
-p = 0.324), and every domain direction aligned strongly with the universal one (mean cosine 0.916). Removing one
-direction compromises guardrails in every domain at once.</p>
-
-<h3>Auditing Abliteration: Normalization Placement, Edit Budget, and Transfer in Single-Direction Refusal Removal</h3>
-<p>C. Tucker, M. Leon. IEEE Opportunity Research Scholars Symposium (ORSS), 2026. <strong>Accepted, to appear
-in IEEE Xplore.</strong></p>
-<p>The follow-on: if one direction carries refusal, how robust are models to its deliberate removal? We audit
-weight-space refusal removal as a tampering attack across Qwen-2.5-7B, Mistral-7B, and Gemma-2-9B, and isolate
-three methodological factors an evaluation must hold constant to rank model robustness. Reproducibility artifacts
-released with a dual-use-aware withholding policy. Will add pdf link upon publication by IEEE.</p>
-
-<h3>Talks and positions</h3>
-<ul>
-  <li>Research talk, ACC Meeting of the Minds Undergraduate Research Conference, FSU (Spring 2026): one of five
-  students selected to represent the University of Miami. "How AI Learns to Say No, and How Easily That Can Be
-  Undone."</li>
-  <li>Research Assistant, advisor Prof. Maikel Leon
-  (Spring 2026 to present).</li>
-  <li>Quantitative Research Analyst with Bonsai Applied Computations Group</li>
-</ul>
-
-<h2>Elsewhere</h2>
-<ul>
-  <li>Risk Intern, Guy Carpenter (Marsh McLennan), New York, Summer 2025: failure-mode analysis on a production
-  contract-analysis NLP model, plus data pipelines processing over 500,000+ insurance records.</li>
-  <li>Teaching assistant at Miami for BTE 320: Programming Fundamentals &amp; Algorithms (Spring 2026 - Present) and Intro to Machine Learning (Fall 2026).</li>
-  <li>Brazilian Jiu-Jitsu, teaching & training (on and off the past ~7 years)</li>
-</ul>
-
-<p class="contact">Full CV on request: <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>.</p>
-
-</body>
-</html>
+<p>email: <a href="mailto:charlietucker@miami.edu">charlietucker@miami.edu</a>. full CV on request.</p>
